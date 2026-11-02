@@ -1,0 +1,48 @@
+stages:
+  seed_historico:
+    desc: "Construye data/raw/ e data/inbox/ desde los CSV de Kaggle"
+    cmd: python scripts/seed_historical.py --kaggle-dir ${kaggle_dir}
+    params:
+      - config/business_costs.yaml:
+          - forecast_horizon_days
+    outs:
+      - data/raw:
+          cache: true
+          persist: true
+      - data/inbox:
+          cache: true
+          persist: true
+
+  preparar_features:
+    desc: "Construye el dataset de features para la fecha de corte"
+    cmd: >
+      python -c "
+      from pathlib import Path
+      import pandas as pd
+      from src.ingesta.lector import leer_historico
+      from src.features.constructor import construir_dataset
+      import yaml, os
+
+      cutoff = os.environ.get('CUTOFF_DATE', '2017-01-31')
+      historico = leer_historico(Path('data/raw'))
+      dataset = construir_dataset(
+          historico['ventas'],
+          historico['oil'],
+          historico['holidays_events'],
+          historico['stores'],
+          cutoff_date=pd.Timestamp(cutoff),
+      )
+      out = Path('data/processed') / f'features_{cutoff}.parquet'
+      out.parent.mkdir(parents=True, exist_ok=True)
+      dataset.to_parquet(out, index=False)
+      print(f'Features: {len(dataset)} filas -> {out}')
+      "
+    deps:
+      - data/raw
+      - src/features/constructor.py
+      - src/ingesta/lector.py
+      - config/model_params.yaml
+    outs:
+      - data/processed:
+          cache: true
+          persist: true

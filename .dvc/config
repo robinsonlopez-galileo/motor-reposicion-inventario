@@ -1,0 +1,5 @@
+[core]
+    remote = myremote
+    autostage = true
+[remote "myremote"]
+    url = gdrive://TU_FOLDER_ID_AQUI

@@ -1,0 +1,21 @@
+# Costos de negocio para la función de pérdida del pedido sugerido.
+# Modificar estos valores cambia las recomendaciones sin tocar el código.
+
+costs:
+  # Costo de quedarse sin stock (quiebre): margen perdido por unidad no vendida.
+  # Estimado como % del precio de venta promedio.
+  stockout_cost_per_unit: 0.30   # 30% del precio promedio
+
+  # Costo de merma: pérdida por unidad pedida en exceso que no se vende.
+  # Para perecederos es mayor; aquí se usa el promedio de la cadena.
+  waste_cost_per_unit: 0.10      # 10% del precio promedio
+
+# Horizonte de pronóstico en días
+forecast_horizon_days: 16
+
+# Cuantiles que genera el modelo (para expresar incertidumbre)
+quantiles: [0.1, 0.5, 0.9]
+
+# Umbral de confianza para usar el cuantil conservador en el pedido
+# (si el costo de quiebre >> merma, se usa cuantil alto)
+order_quantile: 0.7

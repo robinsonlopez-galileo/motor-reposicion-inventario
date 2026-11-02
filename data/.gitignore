@@ -1,0 +1,6 @@
+# DVC rastreará estos directorios
+/raw
+/inbox
+/processed
+/forecasts
+/reports

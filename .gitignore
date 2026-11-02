@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.env
+
+# Data — versionado con DVC, no con Git
+data/raw/
+data/processed/
+data/forecasts/
+data/inbox/
+models/
+*.csv
+*.parquet
+*.pkl
+*.joblib
+
+# DVC cache local
+.dvc/cache/
+.dvc/tmp/
+
+# Airflow
+logs/
+airflow.db
+airflow.cfg
+standalone_admin_password.txt
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Docker volumes
+postgres-db-volume/

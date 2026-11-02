@@ -1,0 +1,27 @@
+# Parámetros del modelo LightGBM para pronóstico de ventas.
+# Versionados con DVC; cada experimento puede rastrearse.
+
+lightgbm:
+  objective: "regression_l1"      # MAE, robusto a outliers de ventas
+  n_estimators: 500
+  learning_rate: 0.05
+  num_leaves: 63
+  min_child_samples: 20
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.1
+  reg_lambda: 0.1
+  random_state: 42
+  n_jobs: -1
+  verbose: -1
+
+# Ventana de entrenamiento: cuántos días hacia atrás usar
+training_window_days: 365
+
+# Modelo baseline: media móvil de N semanas (mismo día de la semana)
+baseline:
+  rolling_weeks: 8    # promedio de las últimas 8 semanas para el mismo día
+
+# Criterio para reemplazar el modelo en producción
+# El modelo nuevo reemplaza al vigente solo si mejora el RMSE en al menos X%
+replacement_threshold_pct: 2.0
